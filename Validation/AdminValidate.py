@@ -1,0 +1,2 @@
+class AdminValidation():
+    pass

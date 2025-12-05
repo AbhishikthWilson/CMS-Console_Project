@@ -1,0 +1,2 @@
+class AbstractDemo:
+    pass
