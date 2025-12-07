@@ -3,19 +3,19 @@ from Lib.RecepMangementlib import RecepManagementLib
 def main():
    while True:
          print("*"*8)
-         print("\t\t\t\t\t\t\tWelcome To Product Management")
+         print("\t\t\t\t\t\t\tWelcome To Patient Management")
          print('''
-               1.Add Product
-               2.display all product
-               3.update product
-               4.search product by id
-               5.disable product
-               6.apply gst
-               7.exit
+               1.Add Patient
+               2.Update Patient
+               3.Search BY Patient ID
+               4.Add appointment
+               5.Payment and Billing
+               6.View appointment
+               7.Logout
                ''')
          choice = input("enter your choice:")
          if choice == '1':
-            RecepManagementLib.insert_product()
+            RecepManagementLib.add_patient()
          elif choice == '2':
             RecepManagementLib.display_all() 
          elif choice == '4':

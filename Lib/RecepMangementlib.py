@@ -1,7 +1,7 @@
 from datetime import datetime
 from dao.abstractProductDao import ProductDaoService
 from dao.ProductDaoImplement import ProductDaoImplementation
-from models.product import Product
+from Models.patient import Patient
 
 class RecepManagementLib:   
     """handles CRUD logic"""
@@ -15,25 +15,38 @@ class RecepManagementLib:
             print(product)
             
     @staticmethod
-    def insert_product():
+    def add_patient():
+        patient = Patient()
+        
         #user input the product details
-        product = Product()   
-        productname = input("enter product name:")
-        product.productname = productname
-        unitprice = input("enter unitprice:")
-        product.unitprice = unitprice
-        categoryid = input("enter category id:")
-        product.categoryid = categoryid
-        #date userinput string converted to mysql date
-        #using datetime
-        m_date = input("enter manufacture date(DD/MM/YYYY):")
+        first_name = input("Enter First name:")
+        patient.first_name = first_name
+        last_name = input("Enter Last name:")
+        patient.last_name = last_name
+        gender = input("Enter Gender:")
+        patient.gender = gender
+        DOB = input("Enter Date of birth(DD/MM/YYYY):")
         #convert string to object
-        date_object = datetime.strptime(m_date,"%d/%m/%Y")
+        date_object = datetime.strptime(DOB,"%d/%m/%Y")
+        #convert to mysql format YYYY-MM-DD
+        msql_date = date_object.strftime("%Y-%m-%d") 
+        patient.DOB = msql_date
+        age = input("Enter age:")
+        patient.age = age
+        phone = input("Enter Phone number:")
+        patient.phone = phone
+        address = input("Enter Address:")
+        patient.address = address
+        email = input("Enter email:")
+        patient.email = email
+        created_on = input("Enter Created Date:")
+        #convert string to object
+        date_object = datetime.strptime(created_on,"%d/%m/%Y")
         #convert to mysql format YYYY-MM-DD
         msql_date = date_object.strftime("%Y-%m-%d")
-        product.manufacturedate = msql_date
+        patient.created_on = msql_date
         
-        if RecepManagementLib.dao_service.insert_products(product):
+        if RecepManagementLib.dao_service.insert_patient(patient):
             print("inserted successfully....")
             
         else:
