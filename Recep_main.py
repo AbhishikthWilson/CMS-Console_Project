@@ -1,4 +1,4 @@
-#from Lib.RecepMangementlib import RecepManagementLib
+from Lib.RecepMangementlib import RecepManagementLib
 
 def recep_dashboard():
     while True:
@@ -16,14 +16,13 @@ def recep_dashboard():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            #RecepManagementLib.add_patient()
-            pass
+            RecepManagementLib.add_patient()
 
         elif choice == '2':
-            #RecepManagementLib.update_product()
-            pass
+            RecepManagementLib.update_patient()
+
         elif choice == '3':
-            #RecepManagementLib.search_by_id()
+            RecepManagementLib.search_by_id()
             pass
         elif choice == '4':
            # RecepManagementLib.add_appointment()
