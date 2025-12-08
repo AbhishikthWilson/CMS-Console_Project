@@ -1,2 +1,0 @@
-class AbstractImplementation():
-    pass

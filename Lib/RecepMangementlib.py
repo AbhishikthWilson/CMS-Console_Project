@@ -1,6 +1,6 @@
 from datetime import datetime
-from Dao.Abstract import AbstractDemo
-from Dao.AbstractImplementation import AbstractImplementation
+from Dao.AdminAbstract import AbstractDemo
+from Dao.AdminAbstractImplementation import AbstractImplementation
 from Models.patient import Patient
 
 class RecepManagementLib:   
