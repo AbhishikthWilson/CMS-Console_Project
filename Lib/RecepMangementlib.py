@@ -1,12 +1,12 @@
 from datetime import datetime
-from dao.abstractProductDao import ProductDaoService
-from dao.ProductDaoImplement import ProductDaoImplementation
+from Dao.Abstract import AbstractDemo
+from Dao.AbstractImplementation import AbstractImplementation
 from Models.patient import Patient
 
 class RecepManagementLib:   
     """handles CRUD logic"""
     
-    dao_service : ProductDaoService = ProductDaoImplementation()
+    dao_service : AbstractDemo = AbstractImplementation()
     
     @staticmethod
     def display_all():
@@ -62,7 +62,7 @@ class RecepManagementLib:
     @staticmethod
     def update_product():
         searchid = int(input("enter product id to be updated:")) 
-        products:Product = RecepManagementLib.dao_service.searchby_id(searchid)
+        products:Patient = RecepManagementLib.dao_service.searchby_id(searchid)
         products = products[0] 
         if not products:
             print("product not found!!")

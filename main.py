@@ -1,29 +1,58 @@
+import pymysql
+from admin_main import admin_dashboard
+from Recep_main import recep_dashboard
+from Doc_main import doctor_dashboard
+from Phara_main import pharmacist_dashboard
+
+
+def db_connect():
+    return pymysql.connect(
+        host="localhost",
+        user="root",
+        password="@chuMon0075",
+        database="cms_console_database"
+    )
+
+
+def authenticate_user(username, password):
+    conn = db_connect()
+    cursor = conn.cursor()
+
+    sql = "SELECT role_id FROM store_credentials WHERE username=%s AND password=%s"
+    cursor.execute(sql, (username, password))
+    data = cursor.fetchone()
+
+    conn.close()
+
+    if data:
+        return data[0]     # return role_id
+    else:
+        return None
+
+
 def main():
     while True:
-        print("*"*80)
-        print("\t\tWelcome to Clinic Management Sysytem")
-        un = input("Enter user name :")
-        passwd = input("Enter password :")
-        print('''
-                1. Add Staff
-                2. Update Staff
-                3. View Staff
-                4. Delete Staff
-                5. Exit
-              ''')
-        choice = int(input("Enter your choice :"))
+        print("*" * 80)
+        print("\t\tWelcome to Clinic Management System")
+        username = input("Enter username: ")
+        password = input("Enter password: ")
 
-        if choice == 1:
-            pass
-        elif choice == 2:
-            pass
-        elif choice == 3:
-            pass
-        elif choice == 4:
-            pass
-        elif choice == 5:
-            break
+        role_id = authenticate_user(username, password)
+
+        if role_id:
+            print("\n Successful Login")
+            if role_id == 1:
+                admin_dashboard()
+            elif role_id == 2:
+                recep_dashboard()
+            elif role_id == 3:
+                doctor_dashboard()
+            elif role_id == 4:
+                pharmacist_dashboard()
+
+        else:
+            print("\n Invalid Username or Password. Try again.\n")
+
 
 if __name__ == "__main__":
     main()
-
