@@ -9,7 +9,7 @@ def db_connect():
     return pymysql.connect(
         host="localhost",
         user="root",
-        password="@chuMon0075",
+        password="181629",
         database="cms_console_database"
     )
 
@@ -52,6 +52,7 @@ def main():
 
         else:
             print("\n Invalid Username or Password. Try again.\n")
+            
 
 
 if __name__ == "__main__":
