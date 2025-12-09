@@ -8,10 +8,11 @@ def recep_dashboard():
                1. Add Patient
                2. Update Patient
                3. Search BY Patient ID
-               4. Add appointment
-               5. Payment and Billing
-               6. View appointment
-               7. Logout
+               4. View Patient List
+               5. Add appointment
+               6. Payment and Billing
+               7. View appointment
+               8. Logout
                ''')
         choice = input("Enter your choice: ")
 
@@ -23,17 +24,20 @@ def recep_dashboard():
 
         elif choice == '3':
             RecepManagementLib.search_by_id()
-            pass
+
         elif choice == '4':
-           # RecepManagementLib.add_appointment()
-           pass
+            RecepManagementLib.display_all()   
+            
         elif choice == '5':
-            #RecepManagementLib.billing()
-            pass
+            RecepManagementLib.add_appointment()
+            
         elif choice == '6':
-            #RecepManagementLib.view_appointment()
-            pass
+            RecepManagementLib.payment_and_billing()
+            
         elif choice == '7':
+            RecepManagementLib.view_appointment()
+            
+        elif choice == '8':
             print("Logging out...")
             break
         

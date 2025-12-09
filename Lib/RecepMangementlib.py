@@ -1,7 +1,11 @@
 from datetime import datetime
 from Dao.RecepAbstract import PatientDaoService
 from Dao.recepdaoimplement import RecepDaoImplementation
-from Models.Patient import Patient
+from Models.patient import Patient
+from Models.appointment import Appointment
+from Models.doctor import Doctor
+from Models.receptionist_billing import ReceptionistBilling
+from Models.staff import Staff
 
 class RecepManagementLib:   
     """handles CRUD logic"""
@@ -10,12 +14,14 @@ class RecepManagementLib:
     
     @staticmethod
     def display_all():
-        products = RecepManagementLib.dao_service.display_all_products()
-        for product in products:
-            print(product)
+        patients = RecepManagementLib.dao_service.patient_display_all()
+        for patient in patients:
+            print(patient)
             
     @staticmethod
     def add_patient():
+        print("\n--- Add Patient ---")
+
         patient = Patient()
         
         #user input the product details
@@ -54,16 +60,20 @@ class RecepManagementLib:
     
     @staticmethod        
     def search_by_id():
+        print("\n--- Search Patient ---")
+
         id = int(input("Enter id:"))
         patient = RecepManagementLib.dao_service.search_by_patient_id(id)
         print(patient)
             
     @staticmethod
     def update_patient():
+        print("\n--- Update Patient ---")
+
         searchid = int(input("enter product id to be updated:")) 
         patient:Patient = RecepManagementLib.dao_service.search_by_patient_id(searchid) 
         if not patient:
-            print("product not found!!")
+            print("patient not found!!")
             return
         confirm = input("Do you want to edit details?(Y/N)")
         if confirm.lower()=='y':
@@ -121,3 +131,86 @@ class RecepManagementLib:
                 print("updated successfully")
             else:
                 print("something went wrong")
+    
+    @staticmethod
+    def add_appointment():
+        appointment = Appointment()
+
+        print("\n--- Add Appointment ---")
+        
+        appointment_date = input("Enter Appointment Date (DD/MM/YYYY): ")
+        #convert string to object
+        date_object = datetime.strptime(appointment_date,"%d/%m/%Y")
+        #convert to mysql format YYYY-MM-DD
+        msql_date = date_object.strftime("%Y-%m-%d")
+        appointment.appointment_date = msql_date
+
+        appointment_time = input("Enter Appointment Time (HH:MM): ")
+        time_object = datetime.strptime(appointment_time, "%H:%M")
+        mysql_time = time_object.strftime("%H:%M:%S")
+        appointment.appointment_time = mysql_time
+
+        token_no = int(input("Enter Token Number: "))
+        appointment.token_no = token_no
+        status = input("Enter Status (Pending/Confirmed): ") 
+        appointment.status = status
+
+        patient_id = int(input("Enter Patient ID: "))
+        patient:Patient = RecepManagementLib.dao_service.search_by_patient_id(patient_id) 
+        if not patient:
+            print("patient not found!!")
+            return
+        appointment.patient_id = patient_id
+
+        doctor_id = int(input("Enter Doctor ID: "))  
+        doctor:Doctor = RecepManagementLib.dao_service.search_by_doctor_id(doctor_id) 
+        if not doctor:
+            print("doctor not found!!")
+            return
+        appointment.doctor_id = doctor_id 
+
+        if RecepManagementLib.dao_service.add_appointment(appointment):
+                print("Added successfully")
+        else:
+                print("something went wrong")
+    
+    @staticmethod
+    def view_appointment():
+        appointments = RecepManagementLib.dao_service.view_appointment()
+        for appointment in appointments:
+            print(appointment) 
+    
+    @staticmethod
+    def payment_and_billing():
+        billing = ReceptionistBilling()
+
+        print("\n--- Payment and Billing ---")
+        
+        total_amount = int(input("Enter Amount: "))
+        billing.total_amount = total_amount
+
+        bill_date = input("Enter Appointment Date (DD/MM/YYYY): ")
+        #convert string to object
+        date_object = datetime.strptime(bill_date,"%d/%m/%Y")
+        #convert to mysql format YYYY-MM-DD
+        msql_date = date_object.strftime("%Y-%m-%d")
+        billing.bill_date = msql_date
+
+        appointment_id = int(input("Enter Appointment ID: "))
+        appointment:Appointment = RecepManagementLib.dao_service.search_by_appointment_id(appointment_id) 
+        if not appointment:
+            print("patient not found!!")
+            return
+        billing.appointment_id = appointment_id
+
+        staff_id = int(input("Enter Staff ID: "))  
+        staff:Staff = RecepManagementLib.dao_service.search_by_staff_id(staff_id) 
+        if not staff:
+            print("doctor not found!!")
+            return
+        billing.staff_id = staff_id 
+
+        if RecepManagementLib.dao_service.payment_and_billing(billing):
+                print("Added successfully")
+        else:
+                print("something went wrong")                           
