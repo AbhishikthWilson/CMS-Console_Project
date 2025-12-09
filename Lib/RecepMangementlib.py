@@ -185,8 +185,21 @@ class RecepManagementLib:
         billing = ReceptionistBilling()
 
         print("\n--- Payment and Billing ---")
+
+        appointment_id = int(input("Enter Appointment ID: "))
+        appointment:Appointment = RecepManagementLib.dao_service.search_by_appointment_id(appointment_id) 
+        if not appointment:
+            print("appointment not found!!")
+            return
+        billing.appointment_id = appointment_id
+
+        doctor: Doctor = RecepManagementLib.dao_service.search_by_doctor_id(appointment.doctor_id)
+        if not doctor:
+            print("Doctor not found!!")
+            return
         
-        total_amount = int(input("Enter Amount: "))
+        print(f"\nDoctor Fee for this appointment: ₹{doctor.doctor_fee}")
+        total_amount = int(input("Enter Total Amount to be Collected: "))
         billing.total_amount = total_amount
 
         bill_date = input("Enter Payment Date (DD/MM/YYYY): ")
@@ -196,12 +209,6 @@ class RecepManagementLib:
         msql_date = date_object.strftime("%Y-%m-%d")
         billing.bill_date = msql_date
 
-        appointment_id = int(input("Enter Appointment ID: "))
-        appointment:Appointment = RecepManagementLib.dao_service.search_by_appointment_id(appointment_id) 
-        if not appointment:
-            print("appointment not found!!")
-            return
-        billing.appointment_id = appointment_id
 
         staff_id = int(input("Enter Staff ID: "))  
         staff:Staff = RecepManagementLib.dao_service.search_by_staff_id(staff_id) 
@@ -218,5 +225,9 @@ class RecepManagementLib:
     @staticmethod
     def view_bill():                                      
         bills = RecepManagementLib.dao_service.view_bill()
+        x=0
         for bill in bills:
-            print(bill) 
+            x+=1
+            print(f"*************BILL:{x}***************")
+            for key,val in bill.items():
+                print(f'{key}:{val}')     

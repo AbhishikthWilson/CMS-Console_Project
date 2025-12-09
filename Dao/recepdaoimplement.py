@@ -294,26 +294,53 @@ class RecepDaoImplementation(PatientDaoService):
     
     def view_bill(self):
         """view bill"""
-        #to store the records from database
-        #create a empty list
-        bill = []
+    
+        bills = []
         cursor = None
-        
+
+        VIEW_BILL_JOIN = """
+            SELECT 
+                rb.total_amount,
+                rb.bill_date,
+                rb.appointment_id,
+                rb.staff_id,
+                
+                p.first_name AS patient_first_name,
+                p.last_name AS patient_last_name,
+
+                d.doctor_fee,
+                
+                stf.name AS doctor_name,       -- doctor name (from staff table)
+                s.name AS staff_name           -- receptionist name
+            FROM receptionist_billing rb
+            JOIN appointment a ON rb.appointment_id = a.appointment_id
+            JOIN patient p ON a.patient_id = p.patient_id
+            JOIN doctor d ON a.doctor_id = d.doctor_id
+            JOIN staff stf ON d.staff_id = stf.staff_id
+            JOIN staff s ON rb.staff_id = s.staff_id
+        """
+
         try:
             cursor = self.conn.cursor(DictCursor)
-            #return data in dict format
-            cursor.execute(self.SELECT_BILL)
-            #fire the query
+            cursor.execute(VIEW_BILL_JOIN)
             rows = cursor.fetchall()
+
             for row in rows:
-                bill.append(ReceptionistBilling(total_amount=row["total_amount"],
-                                        bill_date=row["bill_date"],
-                                        appointment_id=row["appointment_id"],
-                                        staff_id=row["staff_id"]))        
-        
+                bills.append({
+                    "total_amount": row["total_amount"],
+                    "bill_date": row["bill_date"],
+                    "appointment_id": row["appointment_id"],
+                    "staff_id": row["staff_id"],
+                    "patient_name": row["patient_first_name"] + " " + row["patient_last_name"],
+                    "doctor_name": row["doctor_name"],
+                    "doctor_fee": row["doctor_fee"],
+                    "generated_by": row["staff_name"]
+                })
+
         except Exception as e:
-            print("error fetching bill:",e)
-            
+            print("Error fetching bill:", e)
+
         finally:
             cursor.close()
-        return bill
+
+        return bills
