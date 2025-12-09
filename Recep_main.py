@@ -11,8 +11,9 @@ def recep_dashboard():
                4. View Patient List
                5. Add appointment
                6. Payment and Billing
-               7. View appointment
-               8. Logout
+               7. View Appointment
+               8. View Bill
+               9. Logout
                ''')
         choice = input("Enter your choice: ")
 
@@ -36,8 +37,11 @@ def recep_dashboard():
             
         elif choice == '7':
             RecepManagementLib.view_appointment()
-            
+
         elif choice == '8':
+            RecepManagementLib.view_bill()     
+            
+        elif choice == '9':
             print("Logging out...")
             break
         

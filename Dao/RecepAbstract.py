@@ -54,3 +54,8 @@ class PatientDaoService(ABC):
     def search_by_staff_id(self,value):
         """search by staff id"""
         pass
+
+    @abstractmethod
+    def view_bill(self):
+        """view bill"""
+        pass

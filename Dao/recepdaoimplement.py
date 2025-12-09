@@ -18,6 +18,7 @@ class RecepDaoImplementation(PatientDaoService):
     DISPLAY_BY_Doc_ID = "SELECT * FROM doctor WHERE doctor_id = %s"
     SELECT_APP = "SELECT * FROM appointment ORDER BY appointment_date, appointment_time"
     INSERT_BILL = "INSERT INTO receptionist_billing(total_amount, bill_date, appointment_id, staff_id) VALUES (%s,%s,%s,%s)"
+    SELECT_BILL = "SELECT * FROM receptionist_billing"    
     DISPLAY_BY_APP_ID = "SELECT * FROM appointment WHERE appointment_id = %s"
     DISPLAY_BY_STAFF_ID = "SELECT * FROM staff WHERE staff_id = %s"
 
@@ -290,3 +291,29 @@ class RecepDaoImplementation(PatientDaoService):
         finally:
             cursor.close()
         return staff 
+    
+    def view_bill(self):
+        """view bill"""
+        #to store the records from database
+        #create a empty list
+        bill = []
+        cursor = None
+        
+        try:
+            cursor = self.conn.cursor(DictCursor)
+            #return data in dict format
+            cursor.execute(self.SELECT_BILL)
+            #fire the query
+            rows = cursor.fetchall()
+            for row in rows:
+                bill.append(ReceptionistBilling(total_amount=row["total_amount"],
+                                        bill_date=row["bill_date"],
+                                        appointment_id=row["appointment_id"],
+                                        staff_id=row["staff_id"]))        
+        
+        except Exception as e:
+            print("error fetching bill:",e)
+            
+        finally:
+            cursor.close()
+        return bill

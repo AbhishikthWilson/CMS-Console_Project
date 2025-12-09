@@ -70,7 +70,7 @@ class RecepManagementLib:
     def update_patient():
         print("\n--- Update Patient ---")
 
-        searchid = int(input("enter product id to be updated:")) 
+        searchid = int(input("enter patient id to be updated:"))  
         patient:Patient = RecepManagementLib.dao_service.search_by_patient_id(searchid) 
         if not patient:
             print("patient not found!!")
@@ -189,7 +189,7 @@ class RecepManagementLib:
         total_amount = int(input("Enter Amount: "))
         billing.total_amount = total_amount
 
-        bill_date = input("Enter Appointment Date (DD/MM/YYYY): ")
+        bill_date = input("Enter Payment Date (DD/MM/YYYY): ")
         #convert string to object
         date_object = datetime.strptime(bill_date,"%d/%m/%Y")
         #convert to mysql format YYYY-MM-DD
@@ -199,18 +199,24 @@ class RecepManagementLib:
         appointment_id = int(input("Enter Appointment ID: "))
         appointment:Appointment = RecepManagementLib.dao_service.search_by_appointment_id(appointment_id) 
         if not appointment:
-            print("patient not found!!")
+            print("appointment not found!!")
             return
         billing.appointment_id = appointment_id
 
         staff_id = int(input("Enter Staff ID: "))  
         staff:Staff = RecepManagementLib.dao_service.search_by_staff_id(staff_id) 
         if not staff:
-            print("doctor not found!!")
+            print("staff not found!!")
             return
         billing.staff_id = staff_id 
 
         if RecepManagementLib.dao_service.payment_and_billing(billing):
                 print("Added successfully")
         else:
-                print("something went wrong")                           
+                print("something went wrong") 
+    
+    @staticmethod
+    def view_bill():                                      
+        bills = RecepManagementLib.dao_service.view_bill()
+        for bill in bills:
+            print(bill) 
