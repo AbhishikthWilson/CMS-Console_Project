@@ -3,11 +3,12 @@ from Dao.Abstract import AbstractDemo
 from Dao.AbstractImplementation import AbstractImplementation
 from Models.patient import Patient
 
+
 class RecepManagementLib:   
     """handles CRUD logic"""
     
     dao_service : AbstractDemo = AbstractImplementation()
-    
+
     @staticmethod
     def display_all():
         products = RecepManagementLib.dao_service.display_all_products()

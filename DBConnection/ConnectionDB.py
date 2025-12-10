@@ -1,6 +1,6 @@
 import configparser,pymysql
 from pymysql.err import MySQLError
- 
+from pymysql.cursors import DictCursor
 class ConnectionDB:
     '''here we are using singleton design pattern'''
     '''this class will create only one instance'''

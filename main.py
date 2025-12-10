@@ -9,10 +9,9 @@ def db_connect():
     return pymysql.connect(
         host="localhost",
         user="root",
-        password="@chuMon0075",
+        password="Jesmi@12",
         database="cms_console_database"
     )
-
 
 def authenticate_user(username, password):
     conn = db_connect()
@@ -29,7 +28,6 @@ def authenticate_user(username, password):
     else:
         return None
 
-
 def main():
     while True:
         print("*" * 80)
@@ -38,7 +36,6 @@ def main():
         password = input("Enter password: ")
 
         role_id = authenticate_user(username, password)
-
         if role_id:
             print("\n Successful Login")
             if role_id == 1:
@@ -52,7 +49,6 @@ def main():
 
         else:
             print("\n Invalid Username or Password. Try again.\n")
-
 
 if __name__ == "__main__":
     main()

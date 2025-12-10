@@ -1,5 +1,4 @@
 from datetime import date
-
 class Doctor:
     """Doctor class OOP applied"""
 
