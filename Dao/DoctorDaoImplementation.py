@@ -4,9 +4,9 @@ from Models.doctor import Doctor
 
 class DoctorDaoImplementation(DoctorDaoServices):
 
-    INSERT = "INSERT INTO doctor(specialization, doctor_fee, working_time, staff_id, status) VALUES (%s,%s,%s,%s,%s)"
+    INSERT = "INSERT INTO doctor(specialization, doctor_fee, working_time, staff_id) VALUES (%s,%s,%s,%s)"
     UPDATE = "UPDATE doctor SET specialization=%s, doctor_fee=%s, working_time=%s, staff_id=%s WHERE doctor_id=%s"
-    SELECT_ALL = "SELECT * FROM doctor WHERE status='active'"
+    SELECT_ALL = "SELECT * FROM doctor"
     SELECT_ONE = "SELECT * FROM doctor WHERE doctor_id=%s"
 
     def __init__(self):
@@ -20,7 +20,6 @@ class DoctorDaoImplementation(DoctorDaoServices):
                 doctor.doctor_fee,
                 doctor.working_time,
                 doctor.staff_id,
-                "active"
             ))
             self.conn.commit()
             return cursor.rowcount == 1
@@ -40,7 +39,6 @@ class DoctorDaoImplementation(DoctorDaoServices):
                 d.doctor_fee = row[2]
                 d.working_time = row[3]
                 d.staff_id = row[4]
-                d.status = row[5]
                 return d
             return None
         except Exception as e:
@@ -61,7 +59,6 @@ class DoctorDaoImplementation(DoctorDaoServices):
                 d.doctor_fee = row[2]
                 d.working_time = row[3]
                 d.staff_id = row[4]
-                d.status = row[5]
                 doctor_list.append(d)
             return doctor_list
         except Exception as e:

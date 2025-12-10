@@ -1,56 +1,84 @@
 from Dao.AbstractMedicineDao import MedicineDaoService
 from Dao.MedicineDaoImple import MedicineDaoImplementation
-
 from Dao.PrescriptionDaoImple import PrescriptionDaoImplementation
 from Dao.BillDaoImple import BillDaoImplementation
 from Models.medicine import Medicine
-# from Models.medicine_bill import MedicineBill
-from datetime import datetime 
+from datetime import datetime
+from Validation.pharaValidatation import (
+    validate_medicine_name,
+    validate_category,
+    validate_company_name,
+    validate_quantity,
+    validate_price,
+    validate_expiry_date
+)
 
-class  MedicineManagementLib:
-    '''handles CRUD logic'''
-    dao_service:MedicineDaoService=MedicineDaoImplementation()
+
+class MedicineManagementLib:
+    """Handles CRUD logic"""
+
+    dao_service: MedicineDaoService = MedicineDaoImplementation()
     prescription_dao = PrescriptionDaoImplementation()
-    # dao_service = MedicineDaoImplementation()
     bill_dao = BillDaoImplementation()
-    # dao_service = MedicineDaoImplementation()
 
-
+    # ============ USE CASE 1: ADD NEW MEDICINE ============
     @staticmethod
     def insert_medicines():
-        med=Medicine()
-        med_name=input("Enter the medicine name:")
-        med.medicine_name=med_name 
-        med_category=input("Enter the category:")
-        med.category=med_category
-        med_company_name=input("Enter the company name: ")
-        med.company_name=med_company_name
-        med_quantity=int(input("Enter the quantity: "))
-        med.quantity=med_quantity
-        med_price=float(input("Enter the unit price:"))
-        med.price=med_price
-        #user input date->database date format
-        med_expiry_date=input("Enter the expiry date(DD/MM/YYYY):")
-        #convert string to date object
-        date_object=datetime.strptime(med_expiry_date,"%d/%m/%Y")
-        #convert to mysql.format YYYY-MM-DD
-        mysql_date=date_object.strftime("%Y-%m-%d")
-        med.expiry_date=mysql_date
+        med = Medicine()
 
-        if  MedicineManagementLib.dao_service.insert_medicines(med):
+        # Medicine Name
+        while True:
+            try:
+                med.medicine_name = validate_medicine_name(input("Enter the medicine name: "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Category
+        while True:
+            try:
+                med.category = validate_category(input("Enter the category: "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Company Name
+        while True:
+            try:
+                med.company_name = validate_company_name(input("Enter the company name: "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Quantity
+        while True:
+            try:
+                med.quantity = validate_quantity(input("Enter the quantity: "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Price
+        while True:
+            try:
+                med.price = validate_price(input("Enter the unit price: "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Expiry Date
+        while True:
+            try:
+                med.expiry_date = validate_expiry_date(input("Enter expiry date (DD/MM/YYYY): "))
+                break
+            except Exception as e:
+                print("Validation Error:", e)
+
+        # Insert to DB
+        if MedicineManagementLib.dao_service.insert_medicines(med):
             print("Medicine inserted successfully!")
         else:
-            print("something went wrong!!!")
-
-    @staticmethod
-    def display_all_medicines():
-        print("\n--- LIST OF MEDICINES ---")
-        medicines=MedicineManagementLib.dao_service.display_all_medicines()
-        if not medicines:
-            print("No medicines found.")
-            return
-        for med in medicines:
-            print(med)
+            print("Something went wrong!")
 
     # ============ USE CASE 2: VIEW LIST OF MEDICINES ============
     @staticmethod
@@ -79,7 +107,7 @@ class  MedicineManagementLib:
         else:
             for med in medicines:
                 print(med)
-    
+
     # ============ USE CASE 4: DISPENSE MEDICINE ============
     @staticmethod
     def dispense_medicine():
@@ -212,5 +240,3 @@ class  MedicineManagementLib:
         print(f"Duration       : {d['duration']}")
         print(f"Quantity       : {d['quantity']}")
         print(f"Unit Price     : {d['price']}")
- 
-

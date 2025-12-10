@@ -41,7 +41,7 @@ class AdminAbstractImplementation(AdminDaoServies):
 
             if row:
                 staff = Staff()
-                staff.id = row[0]
+                staff.staff_id = row[0]
                 staff.name = row[1]
                 staff.email = row[2]
                 staff.phone = row[3]
@@ -64,7 +64,7 @@ class AdminAbstractImplementation(AdminDaoServies):
 
             for row in rows:
                 staff = Staff()
-                staff.id = row[0]
+                staff.staff_id = row[0]
                 staff.name = row[1]
                 staff.email = row[2]
                 staff.phone = row[3]

@@ -7,7 +7,6 @@ from Models.doctor import Doctor
 from Models.receptionist_billing import ReceptionistBilling
 from Models.staff import Staff
 
-
 class RecepManagementLib:   
     """handles CRUD logic"""
     
@@ -26,32 +25,69 @@ class RecepManagementLib:
         patient = Patient()
         
         #user input the product details
-        first_name = input("Enter First name:")
-        patient.first_name = first_name
-        last_name = input("Enter Last name:")
-        patient.last_name = last_name
+        while True:
+            try:
+               first_name = input("Enter First name:")
+               patient.first_name = first_name
+               break
+            except Exception as e:
+                print(e)  
+        
+        while True:
+            try:
+               last_name = input("Enter Last name:")
+               patient.last_name = last_name
+               break
+            except Exception as e:
+                print(e)
+        
+          
         gender = input("Enter Gender:")
         patient.gender = gender
-        DOB = input("Enter Date of birth(DD/MM/YYYY):")
-        #convert string to object
-        date_object = datetime.strptime(DOB,"%d/%m/%Y")
-        #convert to mysql format YYYY-MM-DD
-        msql_date = date_object.strftime("%Y-%m-%d") 
-        patient.DOB = msql_date
+        while True:
+            try:
+                DOB = input("Enter Date of birth(DD/MM/YYYY):")
+                #convert string to object
+                date_object = datetime.strptime(DOB,"%d/%m/%Y")
+                #convert to mysql format YYYY-MM-DD
+                msql_date = date_object.strftime("%Y-%m-%d") 
+                patient.DOB = msql_date
+                break
+            except Exception as e:
+                print('Date must be in DD/MM/YYYY format',e)
         age = input("Enter age:")
         patient.age = age
-        phone = input("Enter Phone number:")
-        patient.phone = phone
+        
+        while True:
+            try:
+               phone = input("Enter Phone number:")
+               patient.phone = phone
+               break
+            except Exception as e:
+                print(e)
+        
         address = input("Enter Address:")
         patient.address = address
-        email = input("Enter email:")
-        patient.email = email
-        created_on = input("Enter Created Date(DD/MM/YYYY):")
-        #convert string to object
-        date_object = datetime.strptime(created_on,"%d/%m/%Y")
-        #convert to mysql format YYYY-MM-DD
-        msql_date = date_object.strftime("%Y-%m-%d")
-        patient.created_on = msql_date
+        
+        while True:
+            try:
+               email = input("Enter email:")
+               patient.email = email
+               break
+            except Exception as e:
+                print(e)
+        
+        while True:
+            try:
+                created_on = input("enter created on(DD/MM/YYYY):")
+                #convert string to object
+                date_object = datetime.strptime(created_on,"%d/%m/%Y")
+                #convert to mysql format YYYY-MM-DD
+                msql_date = date_object.strftime("%Y-%m-%d")
+                patient.created_on = msql_date 
+                break
+            except Exception as e:
+                print('Date must be in DD/MM/YYYY format',e)
         
         if RecepManagementLib.dao_service.add_patient(patient):
             print("inserted successfully....") 
@@ -91,39 +127,68 @@ class RecepManagementLib:
             choice = input("enter choice:")
             if choice == '1': 
                 field = "first_name"
-                patient.first_name = input("Enter first_name:")
+                while True:
+                    try:
+                        first_name = input("Enter First name:")
+                        patient.first_name = first_name
+                        break
+                    except Exception as e:
+                        print(e)
             elif choice == '2':
                 field = "gender"
                 patient.gender = input("enter gender:") 
             elif choice == '3':
                 field = "DOB"
-                patient.DOB = input("enter date of birth:")
-                DOB = input("Enter Date of birth(DD/MM/YYYY):")
-                #convert string to object
-                date_object = datetime.strptime(DOB,"%d/%m/%Y")
-                #convert to mysql format YYYY-MM-DD
-                msql_date = date_object.strftime("%Y-%m-%d") 
-                patient.DOB = msql_date
+                while True:
+                    try:
+                        DOB = input("Enter Date of birth(DD/MM/YYYY):")
+                        #convert string to object
+                        date_object = datetime.strptime(DOB,"%d/%m/%Y")
+                        #convert to mysql format YYYY-MM-DD
+                        msql_date = date_object.strftime("%Y-%m-%d") 
+                        patient.DOB = msql_date
+                        break
+                    except Exception as e:
+                        print('Date must be in DD/MM/YYYY format',e)    
+                        
             elif choice == '4':
                 field = "age"
                 patient.age = input("enter age:") 
             elif choice =='5':
                 field = "phone"
-                patient.phone = input("enter phone:")
+                while True:
+                    try:
+                        phone = input("Enter Phone number:")
+                        patient.phone = phone
+                        break
+                    except Exception as e:
+                        print(e)
             elif choice =='6':
                 field = "address"
                 patient.address = input("enter address:")
             elif choice == '7':
                 field = "email"
-                patient.email = input("enter email:")  
+                while True:
+                    try:
+                        email = input("Enter email:")
+                        patient.email = email
+                        break
+                    except Exception as e:
+                        print(e)  
             elif choice == '8':
                 field = "created_on"
-                created_on = input("enter created on(DD/MM/YYYY):")
-                #convert string to object
-                date_object = datetime.strptime(created_on,"%d/%m/%Y")
-                #convert to mysql format YYYY-MM-DD
-                msql_date = date_object.strftime("%Y-%m-%d")
-                patient.created_on = msql_date      
+                while True:
+                    try:
+                        created_on = input("enter created on(DD/MM/YYYY):")
+                        #convert string to object
+                        date_object = datetime.strptime(created_on,"%d/%m/%Y")
+                        #convert to mysql format YYYY-MM-DD
+                        msql_date = date_object.strftime("%Y-%m-%d")
+                        patient.created_on = msql_date 
+                        break
+                    except Exception as e:
+                        print('Date must be in DD/MM/YYYY format',e)    
+                             
             else:
                 print("invalid")                          
                    

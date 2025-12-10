@@ -10,7 +10,7 @@ def db_connect():
         host="localhost",
         user="root",
         password="@chuMon0075",
-        database="cms_console_database"
+        database="cmsdb"
     )
 
 def authenticate_user(username, password):

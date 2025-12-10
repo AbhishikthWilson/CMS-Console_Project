@@ -1,6 +1,7 @@
 from Models.staff import Staff
 from Dao.AdminAbstract import AdminDaoServies
 from Dao.AdminAbstractImplementation import AdminAbstractImplementation
+from Validation.RecepValidate import validate_email, validate_name, validate_phone, validate_role_id
 
 
 class AdminManagementLib:
@@ -39,17 +40,66 @@ class AdminManagementLib:
     def add_staff():
         staff = Staff()
 
-        staff.name = input("Enter staff name: ")
-        staff.email = input("Enter staff email: ")
-        staff.phone = input("Enter phone number: ")
-        staff.status = input("Enter status (active/inactive): ")
-        staff.created_on = input("Enter created date (YYYY-MM-DD): ")
-        staff.role_id = int(input("Enter role ID: "))
+        # --- NAME ---
+        while True:
+            name = input("Enter staff name: ")
+            try:
+                validate_name(name)
+                staff.name = name
+                break
+            except Exception as e:
+                print(f"Staff name validation error: {e}")
 
+        # --- EMAIL ---
+        while True:
+            email = input("Enter staff email: ")
+            try:
+                validate_email(email)
+                staff.email = email
+                break
+            except Exception as e:
+                print(f"Email validation error: {e}")
+
+        # --- PHONE ---
+        while True:
+            phone = input("Enter phone number: ")
+            try:
+                validate_phone(phone)
+                staff.phone = phone
+                break
+            except Exception as e:
+                print(f"Phone validation error: {e}")
+
+        # --- STATUS ---
+        while True:
+            st = input("Enter status (active/inactive): ").lower()
+            if st in ["active", "inactive"]:
+                staff.status = st
+                break
+            else:
+                print("Invalid status. Please enter active/inactive")
+
+        # --- CREATED DATE (no validation yet) ---
+        staff.created_on = input("Enter created date (YYYY-MM-DD): ")
+
+        # --- ROLE ID ---
+        while True:
+            rid = input("Enter role ID (1-Admin,2-Receptionist,3-Doctor,4-Pharmacist): ")
+            try:
+                rid = int(rid)
+                validate_role_id(rid)
+                staff.role_id = rid
+                break
+            except Exception as e:
+                print(f"Role ID validation error: {e}")
+
+        # --- INSERT into DB ---
         if AdminManagementLib.dao_service.add_staff(staff):
             print("Inserted Successfully")
         else:
             print("Something went wrong!")
+
+
 
     # ------------------------ VIEW ------------------------
     @staticmethod
@@ -82,24 +132,33 @@ class AdminManagementLib:
 
         choice = input("Enter choice: ")
 
-        if choice == '1':
-            staff.name = input("Enter new name: ")
-        elif choice == '2':
-            staff.email = input("Enter new email: ")
-        elif choice == '3':
-            staff.phone = input("Enter new phone: ")
-        elif choice == '4':
-            staff.status = input("Enter new status: ")
-        elif choice == '5':
-            staff.role_id = int(input("Enter new role ID: "))
-        else:
-            print("Invalid option")
+        try:
+            if choice == '1':
+                staff.name = input("Enter new name: ")
+            elif choice == '2':
+                staff.email = input("Enter new email: ")
+            elif choice == '3':
+                staff.phone = input("Enter new phone: ")
+            elif choice == '4':
+                new_status = input("Enter new status (active/inactive): ")
+                if new_status.lower() not in ["active", "inactive"]:
+                    print("Invalid status.")
+                    return
+                staff.status = new_status
+            elif choice == '5':
+                staff.role_id = int(input("Enter new role ID: "))
+            else:
+                print("Invalid option")
+                return
+        except Exception as e:
+            print(f"Validation error: {e}")
             return
 
         if AdminManagementLib.dao_service.update_staff(staff, staff_id):
             print("Updated Successfully")
         else:
             print("Update Failed!")
+
 
         # ------------------------ DEACTIVATE STAFF (SOFT DELETE) ------------------------
     @staticmethod
